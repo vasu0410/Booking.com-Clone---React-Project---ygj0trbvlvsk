@@ -1,13 +1,46 @@
-import React from 'react'
-import '../styles/App.css';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import "../styles/App.css";
+import Login from "./Login/Login";
+
+import Master from "./Flight/Master";
+import MasterHotel from "./Hotel/MasterHotel";
+import Modals from "./CheckOut/Checkout";
+
 const App = () => {
-
-
+  const [modal2Open, setModal2Open] = useState(true);
   return (
-    <div id="main">
-    </div>
-  )
-}
-
+    <BrowserRouter>
+      <div id='main'>
+        <Routes>
+          <Route
+            path='/Master'
+            element={
+              <Master modal2Open={modal2Open} setModal2Open={setModal2Open} />
+            }
+          />
+          <Route path='/' element={<Login />} />
+          <Route
+            path='/checkout'
+            element={
+              <Modals modal2Open={modal2Open} setModal2Open={setModal2Open} />
+            }
+          />
+          <Route
+            path='/hotels'
+            element={
+              <MasterHotel
+                modal2Open={modal2Open}
+                setModal2Open={setModal2Open}
+              />
+            }
+          />
+        </Routes>
+      </div>
+    </BrowserRouter>
+    // <MasterHotel />
+  );
+};
 
 export default App;

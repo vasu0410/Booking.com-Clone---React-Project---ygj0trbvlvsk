@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
+import {flight_api}  from "../Fetchs/fetch";
 import "./flight.css";
 
 const FlightSearch = ({
@@ -13,17 +14,29 @@ const FlightSearch = ({
   flightsProps,
   setFilteredFlights,
 }) => {
+  console.log('Depart',depart);
   const [flights, setFlights] = useState([]);
 
   const [flightOption, setFlightOption] = useState([]);
+  const [flightOption2,setFlightOption2] = useState([]);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://content.newtonschool.co/v1/pr/63b85b1209f0a79e89e17e3a/flights`
+        flight_api
       );
       const data = await response.json();
-      setFlightOption(data);
+      const data1 =new Set();
+      data.forEach(element => {
+        data1.add(element.from);
+      });
+      const data2 = new Set();
+      data.forEach(element=>{
+        data2.add(element.to);
+      })
+      setFlightOption(data1);
+      setFlightOption2(data2)
+      console.log(data1);
       setFlights(data);
       console.log(data);
     } catch (error) {
@@ -38,8 +51,13 @@ const FlightSearch = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = [...flightsProps];
-    let result = data.filter((data) => data.from == from && data.to == to);
+    if(from=='' || to=='' || depart=='' || arrival==''){
+      alert("Please select options ");
+    }
+    else{
+    let result = data.filter((data) => data.from == from && data.to == to && data.departure.departureDate == depart && data.return.returnDate == arrival);
     setFilteredFlights(result);
+  }
   };
 
   const handleFromChange = (event) => {
@@ -51,6 +69,7 @@ const FlightSearch = ({
   };
 
   const handleDepartureChange = (event) => {
+    
     setDepart(event.target.value);
   };
 
@@ -77,12 +96,12 @@ const FlightSearch = ({
                     defaultValue='1'
                     onChange={handleFromChange}
                   >
-                    <option value='' disabled>
+                    <option value='' disabled selected>
                       Select City
                     </option>
-                    {flightOption.map((form, index) => (
-                      <option key={index} value={form.from}>
-                        {form.from}
+                    {[...flightOption].map((form, index) => (
+                      <option key={index} value={form}>
+                        {form}
                       </option>
                     ))}
                   </select>
@@ -98,12 +117,12 @@ const FlightSearch = ({
                     defaultValue='2'
                     onChange={handleToChange}
                   >
-                    <option value='' disabled>
+                    <option value='' selected disabled>
                       Select City
                     </option>
-                    {flightOption.map((to, index) => (
-                      <option key={index} value={to.to}>
-                        {to.to}
+                    {[...flightOption2].map((form, index) => (
+                      <option key={index} value={form}>
+                        {form}
                       </option>
                     ))}
                   </select>
@@ -124,6 +143,7 @@ const FlightSearch = ({
                 <div className='form-floating'>
                   <input
                     type='date'
+                    min={depart}
                     className='form-control'
                     onChange={handleReturnChange}
                   />
@@ -132,7 +152,7 @@ const FlightSearch = ({
               </div>
             </div>
             <div className='container d-flex justify-content-center position-relative search-btn'>
-              <button type='submit' className='btn btn-primary px-5'>
+              <button type='submit' className='btn_search'>
                 SEARCH
               </button>
             </div>

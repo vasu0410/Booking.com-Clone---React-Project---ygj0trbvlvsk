@@ -1,26 +1,42 @@
 import React, { useState, useEffect } from "react";
+import { Hotel_api } from "../Fetchs/fetch";
 import "./hotel.css";
 
 const HotelSearch = ({
   from,
   setfrom,
-
+  depart,
+  setDepart,
+  arrival,
+  setArrival,
+  type,
+  setType,
   HotelsProps,
   setFilteredHotels,
 }) => {
+  console.log('type',type,'depart',depart,'arrival',arrival,'from',from);
   const [hotels, setHotels] = useState([]);
 
   const [hotelOption, setHotelOption] = useState([]);
-
+  const [hotelOption2, setHotelOption2] = useState([]);
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://content.newtonschool.co/v1/pr/63b85bcf735f93791e09caf4/hotels`
+        Hotel_api
       );
       const data = await response.json();
-      setHotelOption(data);
+      const dataOne = new Set();
+      const data2 = new Set();
+      data.forEach(element => {
+         dataOne.add(element.city); 
+      });
+      data.forEach(element =>{
+        data2.add(element.room_type)
+      })
+      setHotelOption(dataOne);
+      setHotelOption2(data2);
       setHotels(data);
-      console.log(data);
+      console.log(data2);
     } catch (error) {
       console.log(error);
     }
@@ -33,16 +49,25 @@ const HotelSearch = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = [...HotelsProps];
-    let result = data.filter((data) => data.city == from);
+    if(from=="" || depart=="" || arrival=="" || type==""){
+      alert("Please select option");
+    }
+    else{
+    let result = data.filter((data) => data.city == from && data.check_in == depart && data.check_out == arrival && data.room_type == type);
     setFilteredHotels(result);
+    }
   };
 
   const handleFromChange = (event) => {
     setfrom(event.target.value);
   };
   const handleToChange = (event) => {
-    setTo(event.target.value);
+    setType(event.target.value);
   };
+
+  const handleReturnChange =(event)=>{
+    setArrival(event.target.value);
+  }
 
   const handleDepartureChange = (event) => {
     setDepart(event.target.value);
@@ -67,12 +92,12 @@ const HotelSearch = ({
                     defaultValue='1'
                     onChange={handleFromChange}
                   >
-                    <option value='' disabled>
+                    <option value='' disabled selected>
                       Select City
                     </option>
-                    {hotelOption.map((city, index) => (
-                      <option key={index} value={city.city}>
-                        {city.city}
+                    {[...hotelOption].map((city, index) => (
+                      <option key={index} value={city}>
+                        {city}
                       </option>
                     ))}
                   </select>
@@ -94,8 +119,9 @@ const HotelSearch = ({
                 <div className='form-floating'>
                   <input
                     type='date'
+                    min={depart}
                     className='form-control'
-                    onChange={handleDepartureChange}
+                    onChange={handleReturnChange}
                   />
                   <label htmlFor='floatingSelectGrid'>CHECK-OUT</label>
                 </div>
@@ -109,19 +135,21 @@ const HotelSearch = ({
                     defaultValue='2'
                     onChange={handleToChange}
                   >
-                    <option value='' disabled>
-                      Select class
+                    <option value='' selected disabled>
+                      Select Type
                     </option>
-                    <option value=''>A</option>
-                    <option value=''>B</option>
-                    <option value=''>C</option>
+                    {[...hotelOption2].map((room_type, index) => (
+                      <option key={index} value={room_type}>
+                        {room_type}
+                      </option>
+                    ))}
                   </select>
                   <label htmlFor='floatingSelectGrid'>CLASS</label>
                 </div>
               </div>
             </div>
             <div className='container d-flex justify-content-center position-relative search-btn'>
-              <button type='submit' className='btn btn-primary px-5'>
+              <button type='submit' className='btn_search'>
                 SEARCH
               </button>
             </div>

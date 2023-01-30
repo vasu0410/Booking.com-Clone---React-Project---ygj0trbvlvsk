@@ -13,13 +13,10 @@ const Header = () => {
   }, []);
 
   const navigate = useNavigate();
-  const name = localStorage.getItem("emails");
-  const getname = name.split('@')
-  console.log(getname[0]);
   return (
     <nav className='navbar'>
       <div className='container'>
-        <a className='navbar' href='/'>
+        <a className='navbar' href='/Master'>
           <img src={logo} alt='logo' width='140' height='35' className='logo' />
         </a>
         <div className='navLinks'>
@@ -27,7 +24,7 @@ const Header = () => {
             <li>
               <button
                 type='button'
-                class='btn btn-outline-danger'
+                className='btn btn-outline-danger'
                 onClick={() => navigate("/Master")}
               >
                 FLIGHTS
@@ -36,7 +33,7 @@ const Header = () => {
             <li>
               <button
                 type='button'
-                class='btn btn-outline-danger'
+                className='btn btn-outline-danger'
                 onClick={() => navigate("/hotels")}
               >
                 HOTELS
@@ -58,8 +55,8 @@ const Header = () => {
                   aria-labelledby='dropdownMenuButton'
                 >
                   <li>
-                    <a className='dropdown-item' href='#'>
-                      Hello {getname[0]}
+                    <a className='dropdown-item' href='/Master'>
+                      Hello User
                     </a>
                   </li>
 

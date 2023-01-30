@@ -34,3 +34,7 @@
   display: flex;
   width: 150px;
 }
+
+.btn.btn-primary.px-5{
+  margin-right: 5%;
+}

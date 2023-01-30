@@ -1,5 +1,6 @@
 import React, { useState, useEffect, createContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { flight_api } from "../Fetchs/fetch";
 import "./SearchResult.css";
 
 const SearchResult = ({

@@ -4,8 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "../styles/App.css";
 import Login from "./Login/Login";
 
-import Master from "./Flight/Master";
-import MasterHotel from "./Hotel/MasterHotel";
+import Master from "./Flight/Flight";
+import MasterHotel from "./Hotel/Hotel";
 import Modals from "./CheckOut/Checkout";
 
 const App = () => {

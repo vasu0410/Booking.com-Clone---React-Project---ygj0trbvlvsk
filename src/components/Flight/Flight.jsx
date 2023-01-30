@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Header/Header";
+import { flight_api } from "../Fetchs/fetch";
 import FlightSearch from "./FlightSearch";
 import SearchResult from "./SearchResult";
 
@@ -10,11 +11,10 @@ const Master = () => {
   const [depart, setDepart] = useState("");
   const [arrival, setArrival] = useState([]);
   const [flights, setFlights] = useState([]);
-  const [filteredflights, setFilteredFlights] = useState([]);
-
+  const [filteredflights, setFilteredFlights] = useState([]); 
   const getData = async () => {
     await fetch(
-      "https://content.newtonschool.co/v1/pr/63b85b1209f0a79e89e17e3a/flights"
+      flight_api
     )
       .then((response) => response.json())
       .then((data) => {

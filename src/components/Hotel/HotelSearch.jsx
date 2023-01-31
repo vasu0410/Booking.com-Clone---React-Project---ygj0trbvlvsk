@@ -49,8 +49,8 @@ const HotelSearch = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     let data = [...HotelsProps];
-    if(from=="" || depart=="" || arrival=="" || type==""){
-      alert("Please select option");
+    if(from=="" || depart=="" || arrival=="" || type=="" ){
+      alert("Please select valid option");
     }
     else{
     let result = data.filter((data) => data.city == from && data.check_in == depart && data.check_out == arrival && data.room_type == type);
@@ -136,7 +136,7 @@ const HotelSearch = ({
                     onChange={handleToChange}
                   >
                     <option value='' selected disabled>
-                      Select Type
+                      Select Room
                     </option>
                     {[...hotelOption2].map((room_type, index) => (
                       <option key={index} value={room_type}>
@@ -144,7 +144,7 @@ const HotelSearch = ({
                       </option>
                     ))}
                   </select>
-                  <label htmlFor='floatingSelectGrid'>CLASS</label>
+                  <label htmlFor='floatingSelectGrid'>Room Type</label>
                 </div>
               </div>
             </div>

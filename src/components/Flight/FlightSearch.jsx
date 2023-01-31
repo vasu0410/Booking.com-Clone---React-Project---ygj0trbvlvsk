@@ -52,7 +52,10 @@ const FlightSearch = ({
     event.preventDefault();
     let data = [...flightsProps];
     if(from=='' || to=='' || depart=='' || arrival==''){
-      alert("Please select options ");
+      alert("Please select valid options ");
+    }
+    else if(from==to){
+      alert("Please select valid 'From' and 'To' options");
     }
     else{
     let result = data.filter((data) => data.from == from && data.to == to && data.departure.departureDate == depart && data.return.returnDate == arrival);
